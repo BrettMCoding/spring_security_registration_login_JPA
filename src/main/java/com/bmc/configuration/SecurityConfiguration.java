@@ -37,10 +37,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/confirm").permitAll()
             .antMatchers("/forgot").permitAll()
             .antMatchers("/forgotconfirm").permitAll()
-			.antMatchers("**/secured/**").permitAll()
-			.anyRequest().authenticated()
-			.and()
-			.httpBasic();
+            
+			.antMatchers("**/secured/**").permitAll().anyRequest().authenticated()
+				.and()
+				.httpBasic();
 	}
 	
 	// BCrypt passwords for server-side storage.
