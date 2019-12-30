@@ -1,19 +1,18 @@
 package com.bmc.controller;
 
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.bmc.configuration.PasswordValidator;
+
 import com.bmc.model.User;
 import com.bmc.service.EmailService;
 import com.bmc.service.UserService;
@@ -26,18 +25,15 @@ import com.bmc.service.UserService;
 @Controller
 public class RegisterController {
 	
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	private PasswordValidator passwordValidator;
 	private UserService userService;
 	private EmailService emailService;
 	
 	@Autowired
 	public RegisterController(BCryptPasswordEncoder bCryptPasswordEncoder,
 			UserService userService, EmailService emailService) {
-		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+		
 		this.userService = userService;
 		this.emailService = emailService;
-		this.passwordValidator = new PasswordValidator(8, false);
 	}
 	
 	@PostMapping("register")

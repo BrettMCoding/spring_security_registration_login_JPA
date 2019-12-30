@@ -1,6 +1,5 @@
 package com.bmc.controller;
 
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.bmc.configuration.PasswordValidator;
 import com.bmc.model.User;
 import com.bmc.service.EmailService;
 import com.bmc.service.UserService;
@@ -26,20 +23,16 @@ import com.bmc.service.UserService;
 @CrossOrigin(origins = "http://localhost:3000")
 @Controller
 public class ForgotPasswordController {
-	
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	private PasswordValidator passwordValidator;
+
 	private UserService userService;
 	private EmailService emailService;
 	
 	@Autowired
 	public ForgotPasswordController(BCryptPasswordEncoder bCryptPasswordEncoder,
 			UserService userService, EmailService emailService) {
-		
-		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+
 		this.userService = userService;
 		this.emailService = emailService;
-		this.passwordValidator = new PasswordValidator(8, false);
 	}
 	
 	@PostMapping("forgot")
@@ -68,11 +61,11 @@ public class ForgotPasswordController {
 	    
 	    // SIMPLE MAIL TOKEN
 //		SimpleMailMessage registrationEmail = new SimpleMailMessage();
-//		registrationEmail.setTo(newUser.getEmail());
+//		registrationEmail.setTo(checkUser.getEmail());
 //		registrationEmail.setSubject("Registration Confirmation");
 //		registrationEmail.setText("To confirm your e-mail address, please click the link below:\n"
-//				+ appUrl + "/confirm?token=" + newUser.getConfirmationToken());
-//		
+//				+ appUrl + "/confirm?token=" + checkUser.getConfirmationToken());
+		
 //		emailService.sendEmail(registrationEmail);
 		
 	    // save confirmation token to database
