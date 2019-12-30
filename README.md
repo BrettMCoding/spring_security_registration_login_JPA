@@ -1,11 +1,12 @@
 # Spring Security Registration and Login with JPA, MySQL
 
-A REST API for creating users, and using database-side validation. Making it easy to add/retrieve users to a database from the front-end with little effort.
+A REST API for registering new users to a mySQL database, and using database-side validation for logging in and accessing secured endpoints.
 
-The front-end can react accordingly to proper HTML responses, and will not be allowed any data without proper validation in secured requests.
+A front-end can react accordingly to HTML responses, and will not be able to retrieve any data or access secured endpoints without proper validation.
 
-We BCrypt to store passwords, and simple validation to ensure minimal password strength.
+We BCrypt to store passwords, and simple password validation to ensure a minimal password strength.
 We use JPA to make reading and writing to the database incredibly easy.
+When uncommented, new users/forgot password tokens are sent by email.
 
 ### Prerequisites
 For this project I used:
