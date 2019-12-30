@@ -19,8 +19,7 @@ import com.bmc.service.EmailService;
 import com.bmc.service.UserService;
 
 // Controller for registration. Requesting /register with email, username
-// will add a new user to the database and send a token email to the email address.
-// When /confirm is requested with the adequate token as a parameter, the request will accept a new password and activate the user
+// 	will add a new user to the database with a confirm token and it will send that token to the provided email address.
 // NOTE::::: copy the token directly from DB for testing. uncomment out the email section when Postman testing is completed
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -87,46 +86,6 @@ public class RegisterController {
 		userService.saveUser(newUser);
 		
 		// return OK
-		return ResponseEntity.ok(HttpStatus.OK);
-	}
-	
-	// Process confirmation link
-	@PostMapping("confirm")
-	public ResponseEntity<?> confirmPostController(
-			@RequestParam("token") String token,
-			@RequestBody Map<String, String> requestParams) {
-		
-		// Find the user associated with the reset token
-		User user = userService.findByConfirmationToken(token);
-		
-		// If the token isn't valid, return not acceptable
-		if (user == null) { // No token found in DB
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("invalid token");
-		} 
-		
-		// Password validation. length => 8, upper/lowercase, one numeral
-		if (!passwordValidator.checkPassword(requestParams.get("p1"))) {
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("bad password. must contain at least one uppercase letter, one lowercase letter, one number, and be at least 8 characters");
-		}
-		
-		if (!requestParams.get("p1").equals(requestParams.get("p2"))){
-			// password strength serverside validation
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("passwords do not match");
-		}
-
-		// Set new password
-		user.setPassword(bCryptPasswordEncoder.encode(requestParams.get("p1")));
-
-		// Set user to enabled
-		user.setEnabled(1);
-		
-		// Invalidate further use of token
-		user.setConfirmationToken(null);
-		
-		// Save user
-		userService.saveUser(user);
-		
-		//	RETURN OK
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
 }

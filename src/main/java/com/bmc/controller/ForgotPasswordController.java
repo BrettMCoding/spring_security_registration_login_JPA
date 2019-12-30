@@ -19,8 +19,8 @@ import com.bmc.model.User;
 import com.bmc.service.EmailService;
 import com.bmc.service.UserService;
 
-// Controller for forgotten password. Requesting /forgot will add a new confirm token to the database user who's email matches.
-// When /forgotconfirm is requested with the adequate token as a parameter, the request will accept a password update
+// Controller for forgotten password. Requesting /forgot will add a new confirm token to the database user who's email matches
+// 	and it will send that token to the provided email address.
 // NOTE::::: copy the token directly from DB for testing. uncomment out the email section when Postman testing is completed
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -81,43 +81,6 @@ public class ForgotPasswordController {
 		// TODO::::::::: make token expire
 		
 		// return OK
-		return ResponseEntity.ok(HttpStatus.OK);
-	}
-	
-	// Process confirmation link
-	@PostMapping("forgotconfirm")
-	public ResponseEntity<?> forgotPasswordConfirmPostController(
-			@RequestParam("token") String token,
-			@RequestBody Map<String, String> requestParams) {
-		
-		// Find the user associated with the reset token
-		User user = userService.findByConfirmationToken(token);
-		
-		// If the token isn't valid, return not acceptable
-		if (user == null) { // No token found in DB
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("invalid token");
-		} 
-		
-		// Password validation. length => 8, upper/lowercase, one numeral
-		if (!passwordValidator.checkPassword(requestParams.get("p1"))) {
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("bad password. must contain at least one uppercase letter, one lowercase letter, one number, and be at least 8 characters");
-		}
-		
-		if (!requestParams.get("p1").equals(requestParams.get("p2"))){
-			// password strength serverside validation
-			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("bad password");
-		}
-
-		// Set new password
-		user.setPassword(bCryptPasswordEncoder.encode(requestParams.get("p1")));
-		
-		// Invalidate further use of token
-		user.setConfirmationToken(null);
-		
-		// Save user
-		userService.saveUser(user);
-		
-		//	RETURN OK
 		return ResponseEntity.ok(HttpStatus.OK);
 	}
 }
