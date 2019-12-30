@@ -39,6 +39,7 @@ public class ForgotPasswordController {
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.userService = userService;
 		this.emailService = emailService;
+		this.passwordValidator = new PasswordValidator(8, false);
 	}
 	
 	@PostMapping("forgot")

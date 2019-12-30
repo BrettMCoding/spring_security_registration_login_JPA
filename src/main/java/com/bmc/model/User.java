@@ -18,14 +18,14 @@ public class User {
 	@Column(name = "id")
 	private int id;
 	
-	@Column(name = "email", nullable = false, unique = true)
+	@Column(name = "email")
 	private String email;
 	
 	@Column(name = "password")
 	@Transient
 	private String password;
 	
-	@Column(name = "user_name", nullable = false)
+	@Column(name = "user_name")
 	private String userName;
 	
 	@Column(name = "first_name")

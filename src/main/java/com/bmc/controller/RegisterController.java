@@ -114,7 +114,7 @@ public class RegisterController {
 			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("passwords do not match");
 		}
 
-		// Set new password BCRYPT THAT BITCH
+		// Set new password
 		user.setPassword(bCryptPasswordEncoder.encode(requestParams.get("p1")));
 
 		// Set user to enabled
